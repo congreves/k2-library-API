@@ -52,19 +52,34 @@ async function deleteBook(req, res) {
 
 async function editBook(req, res) {
   const id = req.params.id;
-  const title = req.body.title;
-  const author = req.body.author;
-  const genre = req.body.genre;
+
   try {
+    
     const edited = await model.getOne(id);
     if (!edited) throw new Error(`No book with ID ${id} was found`);
 
-    await model.editOne(id, title, author , genre);
-    res.status(200).json({ status: "success", data: edited });
+   await model.editOne(id, req.body);
+    res.status(200).json({ status: "success", data: req.body });
   } catch (err) {
     res.status(400).json({ status: "error", message: err.message });
   }
 }
+
+
+async function editPartOfBook(req, res) {
+    const id = req.params.id;  
+    try {
+    
+        const edited = await model.getOne(id);
+        if (!edited) throw new Error(`No book with ID ${id} was found`);
+    
+       await model.editPart(id, req.body);
+        res.status(200).json({ status: "success", data: req.body });
+      } catch (err) {
+        res.status(400).json({ status: "error", message: err.message });
+      }
+    }
+
 
 module.exports = {
   getBooks,
@@ -72,4 +87,5 @@ module.exports = {
   addBook,
   deleteBook,
   editBook,
+  editPartOfBook
 };

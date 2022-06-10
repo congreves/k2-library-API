@@ -64,7 +64,26 @@ function deleteOne(id) {
 
 function editOne(id, data) {
 
-    const sql = `UPDATE books SET title = ?, author = ?, genre = ? `;
+    const sql = `UPDATE books SET title = ?, author = ?, genre = ? WHERE id = ?`;
+
+    const params = [...VALID_KEYS.map((key) => data[key]), id];
+
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, (error) => {
+            if (error) {
+                console.error(error.message);
+                reject(error);
+            }
+            resolve();
+        })
+
+    })
+
+}
+
+function editPart(id, data) {
+
+    const sql = `UPDATE books SET title = coalesce(?, title), author = coalesce(?, author), genre = coalesce(?, genre) WHERE id = ?`;
 
     const params = [...VALID_KEYS.map((key) => data[key]), id];
 
@@ -86,5 +105,6 @@ module.exports = {
   getOne,
   addOne,
   deleteOne,
-  editOne
+  editOne,
+  editPart
 }

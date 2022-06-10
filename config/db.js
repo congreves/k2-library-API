@@ -1,6 +1,6 @@
 const sqLite = require("sqlite3").verbose();
 
-const db = new sqLite.Database("../db.sqlite", (error) => {
+const db = new sqLite.Database("./db.sqlite", (error) => {
     if (error) {
       console.error(error.message);
       throw error;
@@ -10,7 +10,7 @@ const booksStatement = `
 CREATE TABLE IF NOT EXISTS books 
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
+    title TEXT UNIQUE,
     author TEXT,
     genre TEXT
 )
