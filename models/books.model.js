@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-const VALID_KEYS = ["title", "author", "genre", "publishedAt", "qty"];
+const VALID_KEYS = ["title", "author", "genre"];
 
 
 function getAll() {
@@ -48,9 +48,43 @@ function addOne(data) {
     })
 }
 
+function deleteOne(id) {
+    const sql = "DELETE FROM books WHERE id = ?"
+    return new Promise((resolve, reject) => {
+        db.run(sql, id, (error) => {
+            if (error) {
+                console.error(error.message);
+                reject(error);
+            }
+            resolve();
+        })
+
+    })
+}
+
+function editOne(id, data) {
+
+    const sql = `UPDATE books SET title = ?, author = ?, genre = ? `;
+
+    const params = [...VALID_KEYS.map((key) => data[key]), id];
+
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, (error) => {
+            if (error) {
+                console.error(error.message);
+                reject(error);
+            }
+            resolve();
+        })
+
+    })
+
+}
 
 module.exports = {
   getAll,
   getOne,
-  addOne
+  addOne,
+  deleteOne,
+  editOne
 }
