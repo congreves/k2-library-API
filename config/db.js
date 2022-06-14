@@ -23,7 +23,7 @@ db.run(booksStatement, (error) => {
     }
     const insert = "INSERT INTO books (title, author, genre) VALUES (?, ?, ?)"
     db.run(insert, ["Harry Potter", "J.K Rowling", "Fantasy"], (error) => {
-        if (error){
+        if (error && error.errno !== 19){
          console.error(error);
         }
     })

@@ -3,6 +3,7 @@ const db = require("../config/db");
 const VALID_KEYS = ["title", "author", "genre"];
 
 
+
 function getAll() {
 const sql = "SELECT * FROM books"
 return new Promise((resolve, reject) => {
